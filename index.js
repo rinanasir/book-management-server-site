@@ -21,7 +21,7 @@ async function run() {
         // console.log('connected successfully');
         const database = client.db('book_management');
         // collection for books
-        const productCollection = database.collection('books');
+        const bookCollection = database.collection('books');
         // collection for users
         const userCollection = database.collection('users');
         // collection for booked books
@@ -29,7 +29,7 @@ async function run() {
 
         // GET api for all books
         app.get('/books', async (req, res) => {
-            const cursor = productCollection.find({});
+            const cursor = bookCollection.find({});
             const products = await cursor.toArray();
             res.send(products);
         });
@@ -38,13 +38,13 @@ async function run() {
             const id = req.params.id;
             // console.log('single book', id);
             const query = { _id: ObjectId(id) };
-            const product = await productCollection.findOne(query);
+            const product = await bookCollection.findOne(query);
             res.json(product);
         });
         // POST api for books
         app.post('/books', async (req, res) => {
             const product = req.body;
-            const result = await productCollection.insertOne(product);
+            const result = await bookCollection.insertOne(product);
             // console.log(result);
             res.json(result);
         });
@@ -52,7 +52,7 @@ async function run() {
         app.delete('/books/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
-            const result = await productCollection.deleteOne(query);
+            const result = await bookCollection.deleteOne(query);
             res.json(result);
         });
 
